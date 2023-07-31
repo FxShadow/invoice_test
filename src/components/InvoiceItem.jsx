@@ -8,7 +8,7 @@ const InvoiceItem = ({ id, name, qty, price, onDeleteItem, onEdtiItem }) => {
 
   return (
     <tr>
-      <td className="w-full">
+      <td className="w-full disabled">
         <InvoiceField
           onEditItem={(event) => onEdtiItem(event)}
           cellData={{

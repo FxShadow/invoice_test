@@ -17,14 +17,17 @@ const InvoiceForm = () => {
   const [invoiceNumber, setInvoiceNumber] = useState(1);
   const [cashierName, setCashierName] = useState('');
   const [customerName, setCustomerName] = useState('');
-  const [items, setItems] = useState([
-    {
-      id: uid(6),
-      name: '',
-      qty: 1,
-      price: '1.00',
-    },
-  ]);
+  const [items, setItems] = useState([]);
+
+  const optionsList = [
+    {"value": "", "text": "Seleccione un producto"},
+    {"value": 1, "text": "Producto 1", "price": 25},
+    {"value": 2, "text": "Producto 2", "price": 15},
+    {"value": 3, "text": "Producto 3", "price": 10},
+    {"value": 4, "text": "Producto 4", "price": 50},
+    {"value": 5, "text": "Producto 5", "price": 5},
+    {"value": 6, "text": "Producto 6", "price": 1}
+  ]
 
   const reviewInvoiceHandler = (event) => {
     event.preventDefault();
@@ -43,16 +46,18 @@ const InvoiceForm = () => {
     ]);
   };
 
-  const addItemHandler = () => {
+  const addItemHandler = (event) => {
     const id = uid(6);
+    const product = event.target[event.target.selectedIndex]
+    console.log()
     setItems((prevItem) => [
-      ...prevItem,
       {
         id: id,
-        name: '',
+        name: product.text,
         qty: 1,
-        price: '1.00',
+        price: product.getAttribute('price'),
       },
+      ...prevItem,
     ]);
   };
 
@@ -151,6 +156,24 @@ const InvoiceForm = () => {
             onChange={(event) => setCustomerName(event.target.value)}
           />
         </div>
+        <label
+          htmlFor="productList"
+          className="col-start-2 row-start-1 text-sm font-bold md:text-base"
+        >
+          Seleccione un producto:
+        </label>
+        <select name="productList" id="productList" value="0" onChange={addItemHandler}>
+          {optionsList.map(option =>(
+            <option key={option.value} value={option.value} price={option.price} name={option.text}>{option.text}</option>
+          ))}
+        </select>
+        {/* <button
+          className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
+          type="button"
+          onClick={addItemHandler}
+        >
+          Add Item
+        </button> */}
         <table className="w-full p-4 text-left">
           <thead>
             <tr className="border-b border-gray-900/10 text-sm md:text-base">
@@ -174,13 +197,6 @@ const InvoiceForm = () => {
             ))}
           </tbody>
         </table>
-        <button
-          className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
-          type="button"
-          onClick={addItemHandler}
-        >
-          Add Item
-        </button>
         <div className="flex flex-col items-end space-y-2 pt-6">
           <div className="flex w-full justify-between md:w-1/2">
             <span className="font-bold">Subtotal:</span>
